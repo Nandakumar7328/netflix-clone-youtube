@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import MovieContext from '../../context/MovieContext'
 import './index.css'
 
 const apiStatusConstant = {
@@ -150,19 +149,10 @@ class Originals extends Component {
 
   render() {
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from originals', {username})
-
-          return (
-            <div className="originals-container">
-              <h1 className="originals-heading">Originals</h1>
-              {this.renderOriginalMovieData()}
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="originals-container">
+        <h1 className="originals-heading">Originals</h1>
+        {this.renderOriginalMovieData()}
+      </div>
     )
   }
 }

@@ -3,7 +3,6 @@ import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import {format} from 'date-fns'
 import Header from '../Header'
-import MovieContext from '../../context/MovieContext'
 import MoreLikeMovie from '../MoreLikeMovie'
 import Footer from '../Footer'
 import './index.css'
@@ -253,18 +252,9 @@ class MovieItemDetails extends Component {
 
   render() {
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from trending', {username})
-
-          return (
-            <div className="bg-movie-details-container">
-              {this.renderMovieDetailsData()}
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="bg-movie-details-container">
+        {this.renderMovieDetailsData()}
+      </div>
     )
   }
 }

@@ -4,7 +4,6 @@ import Cookies from 'js-cookie'
 import Header from '../Header'
 import ItemPopular from '../ItemPopular'
 import Footer from '../Footer'
-import MovieContext from '../../context/MovieContext'
 import './index.css'
 
 const apiStatusConstant = {
@@ -108,19 +107,11 @@ class Popular extends Component {
 
   render() {
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from Home', {username})
-          return (
-            <div className="popular-container">
-              <Header />
-              {this.renderPopularData()}
-              <Footer />
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="popular-container">
+        <Header />
+        {this.renderPopularData()}
+        <Footer />
+      </div>
     )
   }
 }

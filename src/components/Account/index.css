@@ -8,6 +8,7 @@
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .account-sub-container {
@@ -21,7 +22,7 @@
   }
 }
 .account-heading {
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 24px;
   font-weight: 500;
   line-height: 28px;

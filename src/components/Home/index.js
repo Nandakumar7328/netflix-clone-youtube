@@ -5,7 +5,6 @@ import './index.css'
 import Header from '../Header'
 import Trending from '../Trending'
 import Originals from '../Originals'
-import MovieContext from '../../context/MovieContext'
 import Footer from '../Footer'
 
 const apiStatusConstant = {
@@ -125,21 +124,12 @@ class Home extends Component {
 
   render() {
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from Home', {username})
-
-          return (
-            <div className="bg-home-container">
-              {this.renderHomePage()}
-              <Trending />
-              <Originals />
-              <Footer />
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="bg-home-container">
+        {this.renderHomePage()}
+        <Trending />
+        <Originals />
+        <Footer />
+      </div>
     )
   }
 }

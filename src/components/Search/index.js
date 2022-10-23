@@ -1,12 +1,13 @@
 import {Component} from 'react'
-import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import {HiOutlineSearch} from 'react-icons/hi'
-import ItemSearch from '../ItemSearch'
+import Loader from 'react-loader-spinner'
 import Header from '../Header'
-import MovieContext from '../../context/MovieContext'
 import Footer from '../Footer'
+import ItemSearch from '../ItemSearch'
+
 import './index.css'
+
+const searchRoute = true
 
 const apiStatusConstant = {
   initial: 'INITIAL',
@@ -17,168 +18,117 @@ const apiStatusConstant = {
 
 class Search extends Component {
   state = {
-    inputSearch: '',
-    apiStatusSearch: apiStatusConstant.initial,
-    searchData: [],
+    searchResultsList: [],
+    renderStatus: apiStatusConstant.initial,
+    searchValue: '',
   }
 
-  componentDidMount() {
-    this.onSearchMovies()
-  }
-
-  onSearchMovies = async () => {
-    this.setState({apiStatusSearch: apiStatusConstant.inprogress})
-    const {inputSearch} = this.state
-    const url = `https://apis.ccbp.in/movies-app/movies-search?search=${inputSearch}`
+  getSearchMoviesData = async searchValue => {
+    this.setState({renderStatus: apiStatusConstant.inprogress})
     const jwtToken = Cookies.get('jwt_token')
+    const searchApi = `https://apis.ccbp.in/movies-app/movies-search?search=${searchValue}`
     const options = {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
+      headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(url, options)
-    const data = await response.json()
+    const response = await fetch(searchApi, options)
     if (response.ok === true) {
-      const updateData = data.results.map(eachData => ({
-        id: eachData.id,
-        backDropPath: eachData.backdrop_path,
-        overview: eachData.overview,
-        posterPath: eachData.poster_path,
-        title: eachData.title,
+      const data = await response.json()
+      const fetchedSearchMoviesData = data.results.map(eachMovie => ({
+        backdropPath: eachMovie.backdrop_path,
+        id: eachMovie.id,
+        posterPath: eachMovie.poster_path,
+        title: eachMovie.title,
       }))
       this.setState({
-        searchData: updateData,
-        apiStatusSearch: apiStatusConstant.success,
+        searchResultsList: fetchedSearchMoviesData,
+        renderStatus: apiStatusConstant.success,
+        searchValue,
       })
     } else {
-      this.setState({apiStatusSearch: apiStatusConstant.failure})
+      this.setState({renderStatus: apiStatusConstant.failure})
     }
   }
 
-  onChangeInput = event => {
-    this.setState({inputSearch: event.target.value})
+  renderSuccessView = () => {
+    const {searchResultsList} = this.state
+    return searchResultsList.length > 0 ? (
+      <ul className="popular-ul-container">
+        {searchResultsList.map(eachMovie => (
+          <ItemSearch eachMovie={eachMovie} key={eachMovie.id} />
+        ))}
+      </ul>
+    ) : (
+      this.renderNoResultsView()
+    )
   }
 
-  onClickInput = event => {
-    if (event.key === 'Enter') {
-      this.onSearchMovies()
-    }
-  }
-
-  noResultFound = () => {
-    const {inputSearch} = this.state
+  renderNoResultsView = () => {
+    const {searchValue} = this.state
 
     return (
       <div className="loader-container-popular">
         <img
-          src="https://res.cloudinary.com/duv0mhzrm/image/upload/v1665899176/Group_7394_sbq8sj.png"
-          alt="no movies"
           className="error-image"
+          alt="no movies"
+          src="https://res.cloudinary.com/dkbxi5qts/image/upload/v1660153718/movies%20prime%20app/No_Views_awtv8d.svg"
         />
         <p className="error-popular-para">
-          Your search for {inputSearch} did not find any matches.
+          Your search for {searchValue} did not find any matches.
         </p>
       </div>
     )
   }
 
-  renderInSuccessViewOfSearch = () => {
-    const {searchData} = this.state
-    if (searchData.length === 0) {
-      return this.noResultFound()
-    }
-
-    return (
-      <div className="popular-list-container">
-        <ul className="popular-ul-container">
-          {searchData.map(eachSearch => (
-            <ItemSearch key={eachSearch.id} itemDetailsSearch={eachSearch} />
-          ))}
-        </ul>
-      </div>
-    )
-  }
-
-  renderLoadingViewOfSearch = () => (
-    <div className="loader-container-popular" testid="loader">
+  renderLoaderView = () => (
+    <div className="loader-container" testid="loader">
       <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
     </div>
   )
 
-  renderInFailureViewOfSearch = () => (
-    <div className="loader-container-popular">
+  renderFailureView = () => (
+    <div className="loader-container">
       <img
-        src="https://res.cloudinary.com/duv0mhzrm/image/upload/v1665899171/Background-Complete_wschfx.png"
         alt="failure view"
-        className="error-image"
+        src="https://res.cloudinary.com/duv0mhzrm/image/upload/v1665899171/Background-Complete_wschfx.png"
+        className="failure-image"
       />
-      <p className="error-popular-para">
-        Something went wrong, Please try again.
-      </p>
+      <p className="error-para">Something went wrong. Please try again</p>
       <button
         type="button"
-        className="btn-popular"
-        onClick={this.onSearchMovies}
+        className="error-btn"
+        onClick={this.getSearchMoviesData}
       >
         Try Again
       </button>
     </div>
   )
 
-  renderSearchData = () => {
-    const {apiStatusSearch} = this.state
-
-    switch (apiStatusSearch) {
+  renderSwitchView = () => {
+    const {renderStatus} = this.state
+    switch (renderStatus) {
       case apiStatusConstant.inprogress:
-        return this.renderLoadingViewOfSearch()
+        return this.renderLoaderView()
       case apiStatusConstant.success:
-        return this.renderInSuccessViewOfSearch()
+        return this.renderSuccessView()
       case apiStatusConstant.failure:
-        return this.renderInFailureViewOfSearch()
+        return this.renderFailureView()
       default:
         return null
     }
   }
 
   render() {
-    const {inputSearch} = this.state
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from Home', {username})
-
-          return (
-            <div className="popular-container" testid="searchRoute">
-              <Header />
-              <div className="searchContainer">
-                <input
-                  type="search"
-                  className="search-input"
-                  value={inputSearch}
-                  placeholder="Search"
-                  onKeyDown={this.onClickInput}
-                  onChange={this.onChangeInput}
-                />
-                <button
-                  type="button"
-                  className="btn-search"
-                  testid="searchButton"
-                  onClick={this.onSearchMovies}
-                >
-                  <HiOutlineSearch className="search-icon-clicked" />
-                </button>
-              </div>
-
-              {this.renderSearchData()}
-              <Footer />
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="popular-container">
+        <Header
+          getSearchMoviesData={this.getSearchMoviesData}
+          searchRoute={searchRoute}
+        />
+        <div className="search-container">{this.renderSwitchView()}</div>
+        <Footer />
+      </div>
     )
   }
 }
-
 export default Search

@@ -3,8 +3,6 @@ import {Link} from 'react-router-dom'
 import Slider from 'react-slick'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import MovieContext from '../../context/MovieContext'
-
 import './index.css'
 
 const apiStatusConstant = {
@@ -152,19 +150,10 @@ class Trending extends Component {
 
   render() {
     return (
-      <MovieContext.Consumer>
-        {value => {
-          const {username} = value
-          console.log('username from popular', {username})
-
-          return (
-            <div className="trending-container">
-              <h1 className="trending-heading">Trending Now</h1>
-              {this.renderTrendingData()}
-            </div>
-          )
-        }}
-      </MovieContext.Consumer>
+      <div className="trending-container">
+        <h1 className="trending-heading">Trending Now</h1>
+        {this.renderTrendingData()}
+      </div>
     )
   }
 }
