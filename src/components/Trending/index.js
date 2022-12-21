@@ -128,7 +128,7 @@ class Trending extends Component {
   )
 
   renderLoadingViewOfTrending = () => (
-    <div className="loader-container-trending" testid="loader">
+    <div className="loader-container-trending">
       <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
     </div>
   )

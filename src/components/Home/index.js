@@ -69,9 +69,11 @@ class Home extends Component {
         <div className="banner-name-container">
           <h1 className="home-banner-heading">{title}</h1>
           <p className="home-banner-para">{overview}</p>
-          <button className="btn-banner" type="button">
-            Play
-          </button>
+          <a href={`https://www.youtube.com/results?search_query=${title}`}>
+            <button className="btn-banner" type="button">
+              Play
+            </button>
+          </a>
         </div>
       </div>
     )
@@ -80,7 +82,7 @@ class Home extends Component {
   renderLoadingView = () => (
     <div className="loader-main-container">
       <Header />
-      <div className="loader-container" testid="loader">
+      <div className="loader-container">
         <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
       </div>
     </div>

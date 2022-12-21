@@ -127,7 +127,7 @@ class Originals extends Component {
   )
 
   renderLoadingViewOfOriginals = () => (
-    <div className="loader-container-originals" testid="loader">
+    <div className="loader-container-originals">
       <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
     </div>
   )

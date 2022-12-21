@@ -23,6 +23,10 @@ class Search extends Component {
     searchValue: '',
   }
 
+  componentDidMount() {
+    this.getSearchMoviesData('')
+  }
+
   getSearchMoviesData = async searchValue => {
     this.setState({renderStatus: apiStatusConstant.inprogress})
     const jwtToken = Cookies.get('jwt_token')
@@ -81,7 +85,7 @@ class Search extends Component {
   }
 
   renderLoaderView = () => (
-    <div className="loader-container" testid="loader">
+    <div className="loader-container">
       <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
     </div>
   )

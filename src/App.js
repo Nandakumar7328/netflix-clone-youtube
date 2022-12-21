@@ -9,6 +9,7 @@ import MovieContext from './context/MovieContext'
 import MovieItemDetails from './components/MovieItemDetails'
 import Search from './components/Search'
 import Account from './components/Account'
+// import VideoPlayer from './components/VideoPlayer'
 import NotFound from './components/NotFound'
 import './App.css'
 
@@ -54,7 +55,7 @@ class App extends Component {
             path="/movies/:id"
             component={MovieItemDetails}
           />
-
+          {/* <ProtectedRoute exact path="/videos/:title" component={VideoPlayer} /> */}
           <Route exact path="/not-found" component={NotFound} />
           <Redirect to="/not-found" />
         </Switch>

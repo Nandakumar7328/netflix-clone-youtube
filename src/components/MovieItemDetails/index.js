@@ -2,6 +2,7 @@ import {Component} from 'react'
 import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
 import {format} from 'date-fns'
+// import {Link} from 'react-router-dom'
 import Header from '../Header'
 import MoreLikeMovie from '../MoreLikeMovie'
 import Footer from '../Footer'
@@ -37,6 +38,7 @@ class MovieItemDetails extends Component {
     const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok === true) {
+      console.log(data)
       const updateMovieData = {
         adult: data.movie_details.adult,
         backDropPath: data.movie_details.backdrop_path,
@@ -140,9 +142,11 @@ class MovieItemDetails extends Component {
               </p>
             </div>
             <p className="home-banner-para">{overview}</p>
-            <button className="btn-banner" type="button">
-              Play
-            </button>
+            <a href={`https://www.youtube.com/results?search_query=${title}`}>
+              <button className="btn-banner" type="button">
+                Play
+              </button>
+            </a>
           </div>
         </div>
         <div className="more-details-container">
@@ -229,7 +233,7 @@ class MovieItemDetails extends Component {
   renderLoadingViewOfMovieDetails = () => (
     <>
       <Header />
-      <div className="loader-container-movie-details" testid="loader">
+      <div className="loader-container-movie-details">
         <Loader type="TailSpin" color="#D81F26" height={50} width={50} />
       </div>
     </>

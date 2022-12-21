@@ -16,7 +16,14 @@ class Header extends Component {
   onSearch = () => {
     const {getSearchMoviesData} = this.props
     const {searchValue} = this.state
-    if (searchValue !== '') {
+    getSearchMoviesData(searchValue)
+  }
+
+  onEnterKey = event => {
+    console.log('hi')
+    if (event.keyCode === 13) {
+      const {getSearchMoviesData} = this.props
+      const {searchValue} = this.state
       getSearchMoviesData(searchValue)
     }
   }
@@ -101,9 +108,10 @@ class Header extends Component {
                 />
                 <button
                   onClick={this.onSearch}
+                  onChange={this.onEnterKey}
                   type="button"
                   className="search-icon-clicked btn-true"
-                  testid="searchButton"
+                  // testid="searchButton"
                 >
                   <HiOutlineSearch className="search-icon-in-search" />
                 </button>
@@ -114,7 +122,7 @@ class Header extends Component {
                   <button
                     type="button"
                     className="btn-search"
-                    testid="searchButton"
+                    // testid="searchButton"
                   >
                     <HiOutlineSearch className="search-icon" />
                   </button>
