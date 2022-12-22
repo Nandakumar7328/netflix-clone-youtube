@@ -18,6 +18,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.getOneMovieData()
+    document.title = 'Netflix'
   }
 
   getOneMovieData = async () => {

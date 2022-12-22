@@ -20,6 +20,7 @@ class MovieItemDetails extends Component {
 
   componentDidMount() {
     this.getMovieDetailsData()
+    document.title = 'Netflix'
   }
 
   getMovieDetailsData = async () => {
